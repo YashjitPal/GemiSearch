@@ -1,0 +1,300 @@
+{
+    "optisearchName": {
+        "message": "OptiSearch"
+    },
+    "optisearchDesc": {
+        "message": "إجابات من ChatGPT وStackOverflow وويكيبيديا وما إلى ذلك جنبًا إلى جنب مع نتائج Google."
+    },
+    "bingchatName": {
+        "message": "Copilot (شات بينج) في Google"
+    },
+    "bingchatDesc": {
+        "message": "🗨️ إجابة Microsoft Copilot بجانب نتائج Google."
+    },
+    "bardName": {
+        "message": "بارد بجوار نتائج Google"
+    },
+    "bardDesc": {
+        "message": "🗨️ إجابة Gemini بجانب نتائج Google."
+    },
+    "Copied_": {
+        "message": "تم النسخ!"
+    },
+    "Error": {
+        "message": "خطأ"
+    },
+    "Go_to_Chrome_Web_Store": {
+        "message": "انتقل إلى Chrome Web Store"
+    },
+    "Get_answers_from__strong__AI___strong_": {
+        "message": "احصل على إجابات من <strong>$AI$</strong>",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "I_want_answers_from__strong__AI___strong__too_": {
+        "message": "أريد أيضًا إجابات من <strong>$AI$</strong>!",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "I_want_answers_from__strong_ChatGPT__strong__and__strong_StackOverflow__strong__too_": {
+        "message": "أريد أيضًا إجابات من <strong>ChatGPT</strong> ومن <strong>StackOverflow</strong>!"
+    },
+    "Manage_subscription": {
+        "message": "إدارة الاشتراك"
+    },
+    "Upgrade_to_Premium": {
+        "message": "ترقية إلى قسط"
+    },
+    "Failed_to_load_subscription_status": {
+        "message": "فشل تحميل حالة الاشتراك"
+    },
+    "Supported_engines": {
+        "message": "محركات مدعومة"
+    },
+    "Loading_subscription___": {
+        "message": "جارٍ تحميل الاشتراك..."
+    },
+    "Privacy": {
+        "message": "خصوصية"
+    },
+    "Rate_this_extension": {
+        "message": "قيم هذه الإضافة"
+    },
+    "GitHub": {
+        "message": "GitHub"
+    },
+    "Also_from_OptiSearch": {
+        "message": "أيضًا من OptiSearch"
+    },
+    "Import_GPX_routes_from_Strava___Komoot_and_follow_them_on_your_watch_": {
+        "message": "استيراد مسارات GPX من Strava و Komoot ومتابعتها على ساعتك!"
+    },
+    "NEW": {
+        "message": "جديد"
+    },
+    "Options": {
+        "message": "خيارات"
+    },
+    "Force_large_panel_width": {
+        "message": "فرض عرض لوحة كبير"
+    },
+    "AI_Assitant": {
+        "message": "المساعد الافتراضي"
+    },
+    "Is_the_user_premium": {
+        "message": "هل هو المستخدم قسط"
+    },
+    "Ask_at_search": {
+        "message": "اسأل عند البحث"
+    },
+    "Ask_the_AI_assistant_as_soon_as_the_result_page_is_loaded": {
+        "message": "اسأل مساعد الذكاء الاصطناعي بمجرد تحميل صفحة النتائج"
+    },
+    "Maximum_number_of_result_panels": {
+        "message": "أقصى عدد من لوحات النتائج"
+    },
+    "ChatGPT": {
+        "message": "ChatGPT"
+    },
+    "Google_account_ID": {
+        "message": "معرف حساب Google"
+    },
+    "Google_account_number_to_use_with_Gemini": {
+        "message": "رقم حساب Google للاستخدام مع Gemini"
+    },
+    "__Premium__": {
+        "message": "⭐ بريميوم ⭐"
+    },
+    "This_also_includes__strong___Premium____strong__for_the_following_extensions_": {
+        "message": "كما يشمل ذلك <strong>⭐ بريميوم ⭐</strong> للامتدادات التالية!"
+    },
+    "Get_Premium": {
+        "message": "احصل على بريميوم"
+    },
+    "_strong_Save_your_conversation__strong__for_later": {
+        "message": "<strong>احفظ محادثتك</strong> للرجوع إليها لاحقًا"
+    },
+    "_strong_Chat_directly__strong__in_the_result_page": {
+        "message": "<strong>Chat مباشرة</strong> في صفحة النتائج"
+    },
+    "OptiSearch__for_ChatGPT_": {
+        "message": "OptiSearch (لل ChatGPT)"
+    },
+    "Premium_subscription": {
+        "message": "اشتراك ممتاز"
+    },
+    "Donate": {
+        "message": "تبرع"
+    },
+    "Minimize_the_panel": {
+        "message": "تقليل اللوحة"
+    },
+    "Expand_the_panel": {
+        "message": "توسيع اللوحة"
+    },
+    "Oups__an_error_occured__Please_try_again_": {
+        "message": "حدث خطأً. يرجى المحاولة مرة أخرى."
+    },
+    "Pause_auto_generation": {
+        "message": "إيقاف توليد النص التلقائي"
+    },
+    "Send_message": {
+        "message": "إرسال رسالة"
+    },
+    "Ask_me_anything___": {
+        "message": "اسألني أي شيء ..."
+    },
+    "_AI__is_answering___": {
+        "message": "$AI$ يجيب...",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Save_conversation_in__AI_": {
+        "message": "حفظ المحادثة في $AI$",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Continue_the_conversation": {
+        "message": "تابع المحادثة"
+    },
+    "Enable_auto_generation": {
+        "message": "تمكين توليد النص التلقائي"
+    },
+    "Waiting_for__strong__AI___strong____": {
+        "message": "جاري انتظار <strong>$AI$</strong>...",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Ask__AI_": {
+        "message": "استفسر من $AI$",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Refresh": {
+        "message": "تحديث"
+    },
+    "Please_login_to__AI___then_refresh": {
+        "message": "يرجى تسجيل الدخول إلى $AI$ ثم تحديث&nbsp",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Login_to__AI_": {
+        "message": "تسجيل الدخول إلى $AI$",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Too_many_requests__Please_solve_the_captcha_and_refresh": {
+        "message": "تم تجاوز الحد الأقصى لطلبات المحتوى. يرجى حل CAPTCHA وإعادة تحميل الصفحة"
+    },
+    "Solve_Google_Gemini_captcha": {
+        "message": "حل CAPTCHA Google Gemini"
+    },
+    "An_error_occured_while_parsing_the_response__br__error_": {
+        "message": "حدث خطأ أثناء تحليل الاستجابة:<br>$error$",
+        "placeholders": {
+            "error": {
+                "content": "$1"
+            }
+        }
+    },
+    "This_Google_account_does_not_have_access_to_Gemini_yet__please_visit__a_href___url___this_link__a__to_activate_it_or_choose_another_Google_account_for_Gemini": {
+        "message": "لا يزال هذا الحساب غير متاح لاستخدام Gemini، يرجى زيارة <a href=\"$url$\">هذا الرابط</a> لتفعيله أو استخدام حساب Google آخر لـ Gemini",
+        "placeholders": {
+            "url": {
+                "content": "$1"
+            }
+        }
+    },
+    "Choose_a_Google_account_for_Gemini": {
+        "message": "اختر حساب Google لـ Gemini"
+    },
+    "Switch_Google_account": {
+        "message": "تغيير حساب جوجل"
+    },
+    "Please_login_to_Bing_with_your_Microsoft_account__then_refresh": {
+        "message": "الرجاء تسجيل الدخول إلى Bing باستخدام حساب Microsoft الخاص بك، ثم تحديث الصفحة"
+    },
+    "Register_to_the_waitlist": {
+        "message": "التسجيل في قائمة الانتظار"
+    },
+    "Sorry__you_ve_reached_the_limit_of_messages_you_can_send_to_Copilot_within_24_hours__Check_back_soon_": {
+        "message": "عذراً، لقد وصلت إلى حد الرسائل التي يمكنك إرسالها إلى Copilot خلال 24 ساعة. راجع لاحقاً!"
+    },
+    "Learn_more": {
+        "message": "تعلم المزيد"
+    },
+    "Show_more": {
+        "message": "عرض المزيد"
+    },
+    "__n__more": {
+        "message": "+$n$ إضافي",
+        "placeholders": {
+            "n": {
+                "content": "$1"
+            }
+        }
+    },
+    "Please_pass_the_Cloudflare_check_on_ChatGPT__then_refresh": {
+        "message": "يرجى اجتياز اختبار Cloudflare على ChatGPT، ثم التحديث"
+    },
+    "Cloudflare_check": {
+        "message": "فحص Cloudflare"
+    },
+    "I_already_have_Premium": {
+        "message": "لدي بالفعل النسخة المميزة"
+    },
+    "Robot_check__": {
+        "message": "✓ التحقق من الروبوت"
+    },
+    "To_see_answers_from__host__you_first_need_to__a_href___link____verify_that_you_are_not_a_robot__a__": {
+        "message": "لرؤية الأجوبة من $host$، تحتاج أولاً إلى <a href='$link$'>التحقق من أنك لست روبوتاً</a>.",
+        "placeholders": {
+            "host": {
+                "content": "$1"
+            },
+            "link": {
+                "content": "$2"
+            }
+        }
+    },
+    "Then__a_href___link___refresh_this_page__a__": {
+        "message": "ثم <a href='$link$'>قم بتحديث هذه الصفحة</a>.",
+        "placeholders": {
+            "link": {
+                "content": "$1"
+            }
+        }
+    },
+    "No_answer_on_this_question____If_you_know_the_answer___a_href___link__post_form__submit_it__a__": {
+        "message": "لا يوجد إجابة على هذا السؤال... إذا كنت تعرف الإجابة، <a href='$link$#post-form'>أرسلها</a>!",
+        "placeholders": {
+            "link": {
+                "content": "$1"
+            }
+        }
+    }
+}
