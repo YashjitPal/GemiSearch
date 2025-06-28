@@ -130,11 +130,11 @@ class Context {
    * @returns {Promise<boolean>} true if the user DOESN'T have premium features
    */
   static async handleNotPremium() {
-    if(await Context.checkIfUserStillNotPremium()) {
-      premiumPresentationPopup();
-      return true;
-    }
-    return false;
+    // if(await Context.checkIfUserStillNotPremium()) { // Removed premium check
+    //   premiumPresentationPopup();
+    //   return true;
+    // }
+    return false; // Always return false, indicating user HAS premium (or rather, no check)
   }
 
   /**

@@ -244,7 +244,7 @@ class ChatSession {
       };
       this.sendTextArea = async () => {
         if (!this.sendingAllowed || !textArea.value) return;
-        if (await Context.handleNotPremium()) return;
+        // if (await Context.handleNotPremium()) return; // Removed premium check
         this.setupAndSend(textArea.value);
         setTextAreaValue('');
       };
@@ -311,7 +311,7 @@ class ChatSession {
         className: 'save-conversation-button',
       });
       this.setDeleteConversationAfter = async (value) => {
-        if (!value && await Context.handleNotPremium()) return;
+        // if (!value && await Context.handleNotPremium()) return; // Removed premium check
         this.deleteConversationAfter = value;
         setSvg(bookmark, SVG[value ? 'emptyBookmark' : 'filledBookmark']);
       };
@@ -329,7 +329,7 @@ class ChatSession {
       });
       setSvg(continueChat, SVG.chat);
       continueChat.addEventListener('click', async () => {
-        if (await Context.handleNotPremium()) return;
+        // if (await Context.handleNotPremium()) return; // Removed premium check
         if (this.mode === ChatSession.Mode.Discussion) {
           return;
         }
