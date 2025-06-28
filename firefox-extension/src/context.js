@@ -91,6 +91,7 @@ class Context {
 
     Context.searchString = parseSearchParam();
     Context.setupRightColumn();
+    Context.adjustPanelPosition(); // Call the new positioning function
 
     if (Context.engineName in Context.processEngine){
       Context.processEngine[Context.engineName]();
@@ -106,12 +107,18 @@ class Context {
       if (message.type === 'updateSetting') {
         Context.save[message.key] = message.value;
         Context.dispatchUpdateSetting(message.key, message.value);
+        if (message.key === 'wideColumn') { // Re-adjust if wideColumn changes
+          Context.adjustPanelPosition();
+        }
       }
       sendResponse(true);
     });
 
+    window.addEventListener('resize', () => Context.adjustPanelPosition()); // Re-adjust on resize
+
     if (Context.chatSession && Context.chatSession.panel) {
       Context.appendPanel(Context.chatSession.panel);
+      Context.adjustPanelPosition(); // Also call after panel is appended
     }
     if (typeof Sites !== 'undefined' && Context.parseResults) {
       Context.parseResults();
@@ -329,8 +336,12 @@ class Context {
         return;
       }
       Context.rightColumn = selectorToDiv(rightColumnSelector);
-      Context.rightColumn.classList.add('optisearch-created');
+      Context.rightColumn.classList.add('optisearch-created'); // Original class
+      Context.rightColumn.classList.add('optisearch-column-fixed'); // New class for fixed positioning styles
       insertAfter(Context.rightColumn, Context.centerColumn);
+    } else {
+      // If it's an existing Google element, ensure it also gets the fixed class
+      Context.rightColumn.classList.add('optisearch-column-fixed');
     }
     
     const updateWideState = (value, start=false) => {
@@ -407,5 +418,82 @@ class Context {
     else if (typeof (Context.engine.onMobile) === 'number')
       return window.innerWidth < Context.engine.onMobile;
     return !!$(Context.engine.onMobile);
+  }
+
+  static adjustPanelPosition() {
+    if (Context.computeIsOnMobile() || !Context.rightColumn || !Context.centerColumn) {
+      if (Context.rightColumn) {
+        Context.rightColumn.style.right = ''; // Reset if not applicable
+        Context.rightColumn.style.position = '';
+        Context.rightColumn.style.marginTop = '';
+      }
+      return;
+    }
+
+    const centerColumnRect = Context.centerColumn.getBoundingClientRect();
+    const searchResultsRightEdge = centerColumnRect.right;
+    const windowWidth = window.innerWidth;
+
+    // Calculate the space available to the right of the search results
+    const spaceToRightOfResults = windowWidth - searchResultsRightEdge;
+
+    if (spaceToRightOfResults < 0) { // Should not happen if centerColumn is correctly identified
+        Context.rightColumn.style.right = '0px'; // Default to edge if calculation is off
+        Context.rightColumn.style.position = 'fixed';
+        Context.rightColumn.style.marginTop = '20px'; // Keep original top margin
+        return;
+    }
+
+    // The panel itself has a max-width defined in CSS, let's try to get it.
+    // Fallback if not easily available or changes.
+    const panelElementForWidth = Context.rightColumn.querySelector(Context.BOX_SELECTOR) || Context.rightColumn;
+    const panelWidth = panelElementForWidth.offsetWidth;
+
+    // Desired midpoint for the panel's *center* is halfway between search results and window edge.
+    // So, the right edge of the panel should be:
+    // (spaceToRightOfResults / 2) - (panelWidth / 2) from the window's right edge.
+    // Let's simplify: position the panel's *left* edge at the midpoint of the available space.
+    // Midpoint of the space = searchResultsRightEdge + (spaceToRightOfResults / 2)
+    // Then, to center the panel in that space, its *left* edge should be at:
+    // searchResultsRightEdge + (spaceToRightOfResults / 2) - (panelWidth / 2)
+    // So, its *right* offset from the window edge would be:
+    // windowWidth - (searchResultsRightEdge + (spaceToRightOfResults / 2) + (panelWidth / 2))
+    // This is getting complicated. Let's use the user's description:
+    // "horizontal mid point of the browser screen's right edge and the end edge where the search results end"
+    // This means the *gap* on either side of our panel should be equal.
+    // Total space available for panel + gaps = spaceToRightOfResults
+    // If panel takes `panelWidth`, then remaining space for two gaps = spaceToRightOfResults - panelWidth
+    // Each gap = (spaceToRightOfResults - panelWidth) / 2
+    // So, the `right` CSS property should be this gap value.
+
+    let desiredRightOffset = (spaceToRightOfResults - panelWidth) / 2;
+
+    // Ensure the panel doesn't overlap with the search results if space is too small
+    if (desiredRightOffset < 0) {
+      desiredRightOffset = 0; // Stick to the right edge of search results if not enough space
+    }
+
+    // And ensure it doesn't go off-screen if window is too narrow (though panelWidth should prevent this)
+    if (desiredRightOffset + panelWidth > windowWidth) {
+        desiredRightOffset = windowWidth - panelWidth;
+    }
+    if (desiredRightOffset < 0) desiredRightOffset = 0;
+
+
+    Context.rightColumn.style.position = 'fixed'; // Important for positioning relative to viewport
+    Context.rightColumn.style.right = `${Math.max(0, desiredRightOffset)}px`; // Ensure it's not negative
+    // We need to ensure top positioning is also sensible, typically it might be based on scroll or fixed.
+    // For now, let's assume a fixed top margin similar to what was in box.css.
+    // This might need adjustment if the panel is intended to scroll with the page vs. stay fixed.
+    // If Context.rightColumn is the one created by setupRightColumn, it's inserted after center.
+    // If it's an existing Google element, its original top might be better.
+    // For simplicity with fixed positioning:
+    Context.rightColumn.style.top = `${centerColumnRect.top}px`; // Align with top of search results
+    Context.rightColumn.style.height = `${centerColumnRect.height}px`; // Attempt to match height
+    Context.rightColumn.style.overflowY = 'auto'; // Allow scrolling within the panel if content overflows
+    Context.rightColumn.style.marginLeft = ''; // Clear any competing margin
+
+    // The original box.css had margin: 20px 0. We've set position:fixed and top.
+    // The individual boxes inside Context.rightColumn still have their margins.
   }
 }
