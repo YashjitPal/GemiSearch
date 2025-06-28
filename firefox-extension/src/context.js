@@ -6,6 +6,9 @@ class Context {
   static DARK_BG_STYLE_ELEMENT_ID = 'dynamic-dark-background-style';
   static MOBILE_CLASS = 'mobile';
 
+  static initialPageRightOffset = null;
+  static pageProcessedForPositioning = false;
+
   static engines = {};
   static engine = {};
   static processEngine = {};
@@ -75,6 +78,10 @@ class Context {
 
   /** Parse document and execute tools, might be run multiple times if the parsing failed once */
   static async execute() {
+    // Reset positioning flags for a new page execution context
+    Context.initialPageRightOffset = null;
+    Context.pageProcessedForPositioning = false;
+
     Context.centerColumn = await awaitElement(Context.engine.centerColumn);
 
     if (Context.engineName === Baidu && Context.centerColumn) {
@@ -428,77 +435,46 @@ class Context {
   static adjustPanelPosition() {
     if (Context.computeIsOnMobile() || !Context.rightColumn || !Context.centerColumn) {
       if (Context.rightColumn) {
-        Context.rightColumn.style.right = ''; // Reset if not applicable
+        Context.rightColumn.style.right = '';
         Context.rightColumn.style.position = '';
         Context.rightColumn.style.marginTop = '';
+        Context.rightColumn.style.maxHeight = ''; // Clear maxHeight too
+        Context.rightColumn.style.overflowY = '';
       }
       return;
     }
 
-    const centerColumnRect = Context.centerColumn.getBoundingClientRect();
-    const searchResultsRightEdge = centerColumnRect.right;
-    const windowWidth = window.innerWidth;
-
-    // Calculate the space available to the right of the search results
-    const spaceToRightOfResults = windowWidth - searchResultsRightEdge;
-
-    if (spaceToRightOfResults < 0) { // Should not happen if centerColumn is correctly identified
-        Context.rightColumn.style.right = '0px'; // Default to edge if calculation is off
-        Context.rightColumn.style.position = 'fixed';
-        Context.rightColumn.style.marginTop = '20px'; // Keep original top margin
-        return;
-    }
-
-    // The panel itself has a max-width defined in CSS, let's try to get it.
-    // Fallback if not easily available or changes.
-    // const panelElementForWidth = Context.rightColumn.querySelector(Context.BOX_SELECTOR) || Context.rightColumn;
-    // const panelWidth = panelElementForWidth.offsetWidth;
-    // With new CSS, Context.rightColumn *is* the element whose width changes.
-    const panelWidth = Context.rightColumn.offsetWidth;
-
-    // Desired midpoint for the panel's *center* is halfway between search results and window edge.
-    // So, the right edge of the panel should be:
-    // (spaceToRightOfResults / 2) - (panelWidth / 2) from the window's right edge.
-    // Let's simplify: position the panel's *left* edge at the midpoint of the available space.
-    // Midpoint of the space = searchResultsRightEdge + (spaceToRightOfResults / 2)
-    // Then, to center the panel in that space, its *left* edge should be at:
-    // searchResultsRightEdge + (spaceToRightOfResults / 2) - (panelWidth / 2)
-    // So, its *right* offset from the window edge would be:
-    // windowWidth - (searchResultsRightEdge + (spaceToRightOfResults / 2) + (panelWidth / 2))
-    // This is getting complicated. Let's use the user's description:
-    // "horizontal mid point of the browser screen's right edge and the end edge where the search results end"
-    // This means the *gap* on either side of our panel should be equal.
-    // Total space available for panel + gaps = spaceToRightOfResults
-    // If panel takes `panelWidth`, then remaining space for two gaps = spaceToRightOfResults - panelWidth
-    // Each gap = (spaceToRightOfResults - panelWidth) / 2
-    // So, the `right` CSS property should be this gap value.
-
-    let desiredRightOffset = (spaceToRightOfResults - panelWidth) / 2;
-
-    // Ensure the panel doesn't overlap with the search results if space is too small
-    if (desiredRightOffset < 0) {
-      desiredRightOffset = 0; // Stick to the right edge of search results if not enough space
-    }
-
-    // And ensure it doesn't go off-screen if window is too narrow (though panelWidth should prevent this)
-    if (desiredRightOffset + panelWidth > windowWidth) {
-        desiredRightOffset = windowWidth - panelWidth;
-    }
-    if (desiredRightOffset < 0) desiredRightOffset = 0;
-
-
-    Context.rightColumn.style.position = 'absolute'; // Changed from fixed to absolute
-    Context.rightColumn.style.right = `${Math.max(0, desiredRightOffset)}px`;
-
-    // Calculate 'top' relative to the document, not viewport
-    // This assumes Context.rightColumn's offsetParent is body or a non-statically positioned container that scrolls with body.
-    // If Context.rightColumn is inserted directly after Context.centerColumn and both are in normal flow,
-    // its natural top position might be sufficient, or we might need to adjust based on centerColumn's top.
-    // Let's try to position it to align with the top of the center column, considering scroll offset.
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    Context.rightColumn.style.top = `${scrollTop + centerColumnRect.top}px`;
+    const centerColumnRect = Context.centerColumn.getBoundingClientRect();
 
-    // Remove height and overflowY as they are for fixed containers typically
+    // Horizontal Positioning (only if not yet processed for this page view)
+    if (!Context.pageProcessedForPositioning || Context.initialPageRightOffset === null) {
+      const searchResultsRightEdge = centerColumnRect.right;
+      const windowWidth = window.innerWidth;
+      const spaceToRightOfResults = windowWidth - searchResultsRightEdge;
+      const panelWidth = Context.rightColumn.offsetWidth; // This width is now fixed by CSS
+      let calculatedRightOffset = (spaceToRightOfResults - panelWidth) / 2;
+
+      if (spaceToRightOfResults < 0) { // Should not happen if centerColumn is correctly identified
+        calculatedRightOffset = 0;
+      } else {
+        if (calculatedRightOffset < 0) {
+          calculatedRightOffset = 0;
+        }
+        // Ensure it doesn't go off-screen if window is too narrow
+        if (calculatedRightOffset + panelWidth > windowWidth) {
+            calculatedRightOffset = windowWidth - panelWidth;
+        }
+        if (calculatedRightOffset < 0) calculatedRightOffset = 0;
+      }
+      Context.initialPageRightOffset = Math.max(0, calculatedRightOffset);
+      Context.pageProcessedForPositioning = true;
+    }
+
+    Context.rightColumn.style.position = 'absolute';
+    Context.rightColumn.style.right = `${Context.initialPageRightOffset}px`;
+
+    // Vertical Positioning (always recalculate as scroll changes)
     Context.rightColumn.style.height = '';
     Context.rightColumn.style.overflowY = '';
     Context.rightColumn.style.marginLeft = '';
