@@ -6,8 +6,8 @@ class Context {
   static DARK_BG_STYLE_ELEMENT_ID = 'dynamic-dark-background-style';
   static MOBILE_CLASS = 'mobile';
 
-  static initialPageRightOffset = null;
-  static pageProcessedForPositioning = false;
+  // static initialPageRightOffset = null; // Removed
+  // static pageProcessedForPositioning = false; // Removed
 
   static engines = {};
   static engine = {};
@@ -78,9 +78,9 @@ class Context {
 
   /** Parse document and execute tools, might be run multiple times if the parsing failed once */
   static async execute() {
-    // Reset positioning flags for a new page execution context
-    Context.initialPageRightOffset = null;
-    Context.pageProcessedForPositioning = false;
+    // Reset positioning flags for a new page execution context // Flags removed
+    // Context.initialPageRightOffset = null;
+    // Context.pageProcessedForPositioning = false;
 
     Context.centerColumn = await awaitElement(Context.engine.centerColumn);
 
@@ -121,7 +121,8 @@ class Context {
       sendResponse(true);
     });
 
-    // window.addEventListener('resize', () => Context.adjustPanelPosition()); // Removed resize listener
+
+    window.addEventListener('resize', () => Context.adjustPanelPosition()); // Restore resize listener
 
     if (Context.chatSession && Context.chatSession.panel) {
       Context.appendPanel(Context.chatSession.panel);
@@ -447,32 +448,27 @@ class Context {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const centerColumnRect = Context.centerColumn.getBoundingClientRect();
 
-    // Horizontal Positioning (only if not yet processed for this page view)
-    if (!Context.pageProcessedForPositioning || Context.initialPageRightOffset === null) {
-      const searchResultsRightEdge = centerColumnRect.right;
-      const windowWidth = window.innerWidth;
-      const spaceToRightOfResults = windowWidth - searchResultsRightEdge;
-      const panelWidth = Context.rightColumn.offsetWidth; // This width is now fixed by CSS
-      let calculatedRightOffset = (spaceToRightOfResults - panelWidth) / 2;
+    // Horizontal Positioning (always recalculate)
+    const searchResultsRightEdge = centerColumnRect.right;
+    const windowWidth = window.innerWidth;
+    const spaceToRightOfResults = windowWidth - searchResultsRightEdge;
+    const panelWidth = Context.rightColumn.offsetWidth; // This width is now fixed by CSS
+    let desiredRightOffset = (spaceToRightOfResults - panelWidth) / 2;
 
-      if (spaceToRightOfResults < 0) { // Should not happen if centerColumn is correctly identified
-        calculatedRightOffset = 0;
-      } else {
-        if (calculatedRightOffset < 0) {
-          calculatedRightOffset = 0;
-        }
-        // Ensure it doesn't go off-screen if window is too narrow
-        if (calculatedRightOffset + panelWidth > windowWidth) {
-            calculatedRightOffset = windowWidth - panelWidth;
-        }
-        if (calculatedRightOffset < 0) calculatedRightOffset = 0;
+    if (spaceToRightOfResults < 0) {
+      desiredRightOffset = 0;
+    } else {
+      if (desiredRightOffset < 0) {
+        desiredRightOffset = 0;
       }
-      Context.initialPageRightOffset = Math.max(0, calculatedRightOffset);
-      Context.pageProcessedForPositioning = true;
+      if (desiredRightOffset + panelWidth > windowWidth) {
+          desiredRightOffset = windowWidth - panelWidth;
+      }
+      if (desiredRightOffset < 0) desiredRightOffset = 0;
     }
 
     Context.rightColumn.style.position = 'absolute';
-    Context.rightColumn.style.right = `${Context.initialPageRightOffset}px`;
+    Context.rightColumn.style.right = `${Math.max(0, desiredRightOffset)}px`;
 
     // Vertical Positioning (always recalculate as scroll changes)
     Context.rightColumn.style.height = '';
