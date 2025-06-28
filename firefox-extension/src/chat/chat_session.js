@@ -322,11 +322,12 @@ class ChatSession {
 
       return continueChatButton;
     }
+    */ // buildChatButton function removed
 
     const buildLeftButtonsContainer = () => {
       const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
-      // leftButtonsContainer.append(buildBookmarkButton()); // Removed
-      leftButtonsContainer.append(buildChatButton());
+      // leftButtonsContainer.append(buildBookmarkButton()); // Already removed
+      // leftButtonsContainer.append(buildChatButton()); // Chat button removed
       return leftButtonsContainer;
     }
 
