@@ -297,11 +297,11 @@ class ChatSession {
     }
 
     const buildChatContainer = () => {
-      const chatContainer = el('div', { className: 'response-container' }); // Remains 'response-container'
-      // this.listen('conversationModeSwitched', () => chatContainer.className = 'chat-container'); // Event removed
+      const chatContainer = el('div', { className: 'response-container' });
+      // this.listen('conversationModeSwitched', () => chatContainer.className = 'chat-container');
       chatContainer.append(
         this.discussion.el
-        // buildInputContainer(), // Input container is removed from chat display area
+        // buildInputContainer() // Removing input container again
       );
       return chatContainer;
     }

@@ -37,10 +37,17 @@
   padding: 8px 20px;
   font-size: 15px;
   position: relative;
-  transition: max-height 5s;
-  /* overflow-y: auto; */
-  max-height: initial;
+  /* transition: max-height 5s; */ /* Max-height transition not really used now */
+  max-height: initial; /* JS will set maxHeight for footer avoidance */
   line-height: 1.5em;
+  min-height: 50px; /* Ensure panel is visible even if content is initially empty */
+  display: flex; /* Added to help manage inner layout if optibody is only child */
+  flex-direction: column; /* Added */
+}
+
+.optibody { /* Ensure optibody can grow if it's the main content area */
+  flex-grow: 1;
+  min-height: 20px; /* Give optibody itself some presence */
 }
 
 .folded {
