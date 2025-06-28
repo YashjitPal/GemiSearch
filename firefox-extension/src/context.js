@@ -337,11 +337,11 @@ class Context {
       }
       Context.rightColumn = selectorToDiv(rightColumnSelector);
       Context.rightColumn.classList.add('optisearch-created'); // Original class
-      Context.rightColumn.classList.add('optisearch-column-fixed'); // New class for fixed positioning styles
+      Context.rightColumn.classList.add('optisearch-column-positioned'); // Updated class name
       insertAfter(Context.rightColumn, Context.centerColumn);
     } else {
-      // If it's an existing Google element, ensure it also gets the fixed class
-      Context.rightColumn.classList.add('optisearch-column-fixed');
+      // If it's an existing Google element, ensure it also gets the positioned class
+      Context.rightColumn.classList.add('optisearch-column-positioned');
     }
     
     const updateWideState = (value, start=false) => {
@@ -446,8 +446,10 @@ class Context {
 
     // The panel itself has a max-width defined in CSS, let's try to get it.
     // Fallback if not easily available or changes.
-    const panelElementForWidth = Context.rightColumn.querySelector(Context.BOX_SELECTOR) || Context.rightColumn;
-    const panelWidth = panelElementForWidth.offsetWidth;
+    // const panelElementForWidth = Context.rightColumn.querySelector(Context.BOX_SELECTOR) || Context.rightColumn;
+    // const panelWidth = panelElementForWidth.offsetWidth;
+    // With new CSS, Context.rightColumn *is* the element whose width changes.
+    const panelWidth = Context.rightColumn.offsetWidth;
 
     // Desired midpoint for the panel's *center* is halfway between search results and window edge.
     // So, the right edge of the panel should be:
@@ -480,20 +482,25 @@ class Context {
     if (desiredRightOffset < 0) desiredRightOffset = 0;
 
 
-    Context.rightColumn.style.position = 'fixed'; // Important for positioning relative to viewport
-    Context.rightColumn.style.right = `${Math.max(0, desiredRightOffset)}px`; // Ensure it's not negative
-    // We need to ensure top positioning is also sensible, typically it might be based on scroll or fixed.
-    // For now, let's assume a fixed top margin similar to what was in box.css.
-    // This might need adjustment if the panel is intended to scroll with the page vs. stay fixed.
-    // If Context.rightColumn is the one created by setupRightColumn, it's inserted after center.
-    // If it's an existing Google element, its original top might be better.
-    // For simplicity with fixed positioning:
-    Context.rightColumn.style.top = `${centerColumnRect.top}px`; // Align with top of search results
-    Context.rightColumn.style.height = `${centerColumnRect.height}px`; // Attempt to match height
-    Context.rightColumn.style.overflowY = 'auto'; // Allow scrolling within the panel if content overflows
-    Context.rightColumn.style.marginLeft = ''; // Clear any competing margin
+    Context.rightColumn.style.position = 'absolute'; // Changed from fixed to absolute
+    Context.rightColumn.style.right = `${Math.max(0, desiredRightOffset)}px`;
 
-    // The original box.css had margin: 20px 0. We've set position:fixed and top.
-    // The individual boxes inside Context.rightColumn still have their margins.
+    // Calculate 'top' relative to the document, not viewport
+    // This assumes Context.rightColumn's offsetParent is body or a non-statically positioned container that scrolls with body.
+    // If Context.rightColumn is inserted directly after Context.centerColumn and both are in normal flow,
+    // its natural top position might be sufficient, or we might need to adjust based on centerColumn's top.
+    // Let's try to position it to align with the top of the center column, considering scroll offset.
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    Context.rightColumn.style.top = `${scrollTop + centerColumnRect.top}px`;
+
+    // Remove height and overflowY as they are for fixed containers typically
+    Context.rightColumn.style.height = '';
+    Context.rightColumn.style.overflowY = '';
+    Context.rightColumn.style.marginLeft = '';
+
+    // Restore some default vertical margin if needed, or rely on container's padding.
+    // The .optisearchbox within will have its own margins if defined in box.css
+    // For now, let the inner box's margin (if any) handle it.
+    // Context.rightColumn.style.marginTop = '20px'; // Or manage via inner .optisearchbox margin
   }
 }

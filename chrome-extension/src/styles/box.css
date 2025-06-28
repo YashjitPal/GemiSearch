@@ -2,47 +2,40 @@
   --line-dark: #34363e;
   --expand-time: 0.5s;
   --opti-max-width: 600px;
-  /* Approx. default panel width for calculation, adjust if needed */
-  --opti-default-panel-width: 350px;
+  --opti-compressed-width: 350px; /* Explicit compressed width */
 }
 
-/* Styles for the container (Context.rightColumn) that will be fixed */
-.optisearch-column-fixed {
-  /* position, top, right, height, overflowY are set by JS */
-  /* min-width and max-width will apply to the content *inside* if needed,
-     but the container itself is sized by JS logic primarily.
-     Let's ensure the boxes within it behave. */
+/* Styles for the container (Context.rightColumn) that will be absolutely positioned */
+.optisearch-column-positioned {
+  /* position, top, right are set by JS */
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Space between multiple boxes if ever appended to same column */
-  /* Override any float or clear from original page if it's an existing element */
+  gap: 10px;
   float: none !important;
   clear: both !important;
-  margin: 0 !important; /* JS controls positioning */
-  padding: 0 !important; /* Reset padding */
-  z-index: 9999; /* High z-index to stay on top */
+  padding: 0 !important;
+  z-index: 9999;
+  width: var(--opti-compressed-width); /* Default to compressed width */
+  transition: width var(--expand-time) ease-in-out; /* Smooth transition for width change */
+}
+
+.optisearch-column-positioned[data-optisearch-column="wide"] {
+  width: var(--opti-max-width); /* Expanded width */
 }
 
 .optisearchbox {
-  /* margin: 20px 0 20px 0; */ /* Top/bottom margin can remain if desired, or set to 0 if JS handles all spacing */
-  margin: 0; /* Let the container handle spacing if fixed, or keep vertical margins */
+  margin: 20px 0;
   border-radius: 8px;
-  min-width: 250px; /* This still applies if the calculated space is very small */
-  max-width: var(--opti-max-width); /* Content won't exceed this */
-  width: 100%; /* Make box take full width of its fixed container */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  /* min-width: 250px; */ /* Let container width dictate this now */
+  /* max-width: var(--opti-max-width); */ /* Container handles max width */
+  width: 100%;
+  box-sizing: border-box;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
-  overflow: hidden; /* This is fine */
-  /* transition: min-width var(--expand-time) linear; */ /* Transition might be on the container now if its width changes */
+  overflow: hidden;
 }
 
-/* When the Context.rightColumn is set to wide */
-[data-optisearch-column=wide].optisearch-column-fixed {
-  /* JS will set its width/right offset. The inner .optisearchbox will take 100% of it. */
-  /* min-width for the box itself might still be relevant if container is wider */
-}
-
-[data-optisearch-column=wide] .optisearchbox {
-   /* max-width is already set, width: 100% will respect it. */
-   /* No specific min-width override needed here if container handles it */
-}
+/* The [data-optisearch-column=wide] .optisearchbox rule can be removed if
+   .optisearchbox width: 100% is sufficient and container handles the two width states.
+   If specific styles for the box itself in wide mode are needed, it can be kept.
+   For now, assuming container width change is enough.
+*/
