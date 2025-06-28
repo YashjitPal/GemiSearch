@@ -1,7 +1,7 @@
 class Context {
-  static EXTENSION_SELECTOR_PREFIX = WhichExtension;
-  static BOX_CLASS = `${Context.EXTENSION_SELECTOR_PREFIX}-box`;
-  static BOX_SELECTOR = `.${Context.BOX_CLASS}`;
+  static EXTENSION_SELECTOR_PREFIX = WhichExtension; // Keep
+  static BOX_CLASS = `${Context.EXTENSION_SELECTOR_PREFIX}-box`; // Keep
+  static BOX_SELECTOR = `.${Context.BOX_CLASS}`; // Keep
   static STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-style`;
   static DARK_BG_STYLE_ELEMENT_ID = 'dynamic-dark-background-style';
   static MOBILE_CLASS = 'mobile';
@@ -22,11 +22,11 @@ class Context {
   static rightColumnElement = null;
   static set rightColumn(value) {
     Context.rightColumnElement = value;
-    if (value)
-      value.dataset.optisearchColumn = Context.get('wideColumn');
+    // if (value) // wideColumn logic removed
+    //   value.dataset.optisearchColumn = Context.get('wideColumn');
   }
   static get rightColumn() {
-    return Context.rightColumnElement;
+    return Context.rightColumnElement; // Keep getter
   }
 
   static centerColumn = null;
@@ -107,18 +107,18 @@ class Context {
       if (message.type === 'updateSetting') {
         Context.save[message.key] = message.value;
         Context.dispatchUpdateSetting(message.key, message.value);
-        if (message.key === 'wideColumn') { // Re-adjust if wideColumn changes
-          Context.adjustPanelPosition();
-        }
+        // if (message.key === 'wideColumn') { // wideColumn logic removed
+        //   Context.adjustPanelPosition();
+        // }
       }
       sendResponse(true);
     });
 
-    window.addEventListener('resize', () => Context.adjustPanelPosition()); // Re-adjust on resize
+    window.addEventListener('resize', () => Context.adjustPanelPosition()); // Re-adjust on resize - Keep
 
     if (Context.chatSession && Context.chatSession.panel) {
       Context.appendPanel(Context.chatSession.panel);
-      Context.adjustPanelPosition(); // Also call after panel is appended
+      Context.adjustPanelPosition(); // Also call after panel is appended - Keep
     }
     if (typeof Sites !== 'undefined' && Context.parseResults) {
       Context.parseResults();
@@ -206,39 +206,43 @@ class Context {
    */
   static appendPanel(panel) {
     const buildTopButtons = () => {
+      // Remove star (rate), crown (premium), and heart (donate) buttons
       const topButtonsContainer = el('div', { className: 'top-buttons-container headerhover' });
-      const star = el('div', { className: 'thumb', title: _t("Rate this extension") }, topButtonsContainer);
-      el('a', { textContent: '👍', href: webstore + '/reviews' }, star);
-      const crown = el('div', { className: 'star', title: _t("Premium subscription"), textContent: '⭐' }, topButtonsContainer);
-      crown.onclick = premiumPresentationPopup;
-      Context.addSettingListener('premium', () => {
-        crown.onclick = Context.extpayUser.paidAt ? Context.extpay.openPaymentPage : premiumPresentationPopup;
-      });
-      const heart = el('div', { className: 'heart', title: _t("Donate") }, topButtonsContainer);
-      el('a', { textContent: '❤️', href: donationLink }, heart);
-      return topButtonsContainer;
+      // Example: Keep only a settings button if one existed, or leave empty
+      // For now, returning an empty container or null if no buttons are left.
+      // If there are other essential buttons, they should be preserved here.
+      // Based on request, all specified buttons are removed.
+      return topButtonsContainer; // Or return null if it should not be appended
     }
 
-    const buildExpandArrow = () => {
-      const expandArrow = el('div', { className: 'expand-arrow' });
-      setSvg(expandArrow, SVG.chevron);
-      const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? _t("Minimize the panel") : _t("Expand the panel");
-      setTitleExpand();
-      expandArrow.addEventListener('click', () => Context.set('wideColumn', !Context.get('wideColumn')));
-      Context.addSettingListener('wideColumn', setTitleExpand);
-      return expandArrow;
-    }
+    // buildExpandArrow function is removed
+    // const buildExpandArrow = () => { ... }
+
     const header = $('.optiheader', panel);
     if (header) {
       header.prepend(el('div', { className: 'watermark', textContent: _t("optisearchName") }, header));
-      header.prepend(buildTopButtons());
 
-      let rightButtonsContainer = $('.right-buttons-container', header);
-      if (!rightButtonsContainer) {
-        rightButtonsContainer = el('div', { className: 'right-buttons-container' }, header);
+      const topButtons = buildTopButtons();
+      if (topButtons && topButtons.hasChildNodes()) { // Only append if there are buttons
+          header.prepend(topButtons);
       }
-      rightButtonsContainer.classList.add('headerhover');
-      rightButtonsContainer.append(buildExpandArrow());
+
+      // Remove expand arrow from rightButtonsContainer
+      let rightButtonsContainer = $('.right-buttons-container', header);
+      if (rightButtonsContainer) {
+        const expandArrowEl = rightButtonsContainer.querySelector('.expand-arrow');
+        if (expandArrowEl) {
+          expandArrowEl.remove();
+        }
+        // If rightButtonsContainer is now empty and not needed for other things, it could also be removed.
+        // For now, just removing the arrow.
+      } else {
+        // Ensure rightButtonsContainer exists if other buttons (like pause) are still there
+        // rightButtonsContainer = el('div', { className: 'right-buttons-container headerhover' }, header);
+        // header.append(rightButtonsContainer); // This line might be wrong, depends on original structure
+      }
+      // The original code appended buildExpandArrow to rightButtonsContainer.
+      // Now we don't append it.
     }
 
     const box = el("div", { className: Context.BOX_CLASS });
@@ -253,7 +257,7 @@ class Context {
     shadow.append(panel);
 
     panel.classList.add(EngineTechnicalNames[Context.engineName], "bright");
-    $(`.expand-arrow`, panel)?.classList.toggle('rotated', Context.rightColumn.dataset.optisearchColumn === 'wide');   
+    // $(`.expand-arrow`, panel)?.classList.toggle('rotated', Context.rightColumn.dataset.optisearchColumn === 'wide'); // expand-arrow removed
 
     Context.appendBoxes([box]);
 
@@ -344,34 +348,35 @@ class Context {
       Context.rightColumn.classList.add('optisearch-column-positioned');
     }
     
-    const updateWideState = (value, start=false) => {
-      if (!start && !$(`style.wide-column-transition`)) {
-        el('style', {
-          className: 'wide-column-transition',
-          textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
-        }, Context.docHead);
-      }
-      Context.rightColumn.dataset.optisearchColumn = value ? 'wide' : 'thin';
-      Context.boxes.forEach(box => {
-        $(`.expand-arrow`, box.shadowRoot)?.classList.toggle('rotated', value)
-      });
-    }
-    updateWideState(Context.get('wideColumn'), true);
-    Context.addSettingListener('wideColumn', updateWideState);
+    // const updateWideState = (value, start=false) => { // wideColumn logic removed
+    //   if (!start && !$(`style.wide-column-transition`)) {
+    //     el('style', {
+    //       className: 'wide-column-transition',
+    //       textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
+    //     }, Context.docHead);
+    //   }
+    //   Context.rightColumn.dataset.optisearchColumn = value ? 'wide' : 'thin';
+    //   Context.boxes.forEach(box => {
+    //     $(`.expand-arrow`, box.shadowRoot)?.classList.toggle('rotated', value)
+    //   });
+    // }
+    // updateWideState(Context.get('wideColumn'), true); // wideColumn logic removed
+    // Context.addSettingListener('wideColumn', updateWideState); // wideColumn logic removed
 
-    setObserver(mutations => {
-      mutations.some(m => {
-        if (m.attributeName !== "data-optisearch-column") return;
-        if(!m.target.dataset.optisearchColumn) {
-          Context.set('wideColumn', Context.get('wideColumn')); // to set again the column attribute
-          return;
-        }
-        const isWide = m.target.dataset.optisearchColumn === 'wide';
-        if (Context.get('wideColumn') !== isWide) {
-          Context.set('wideColumn', isWide);
-        }
-      })
-    }, Context.rightColumn, { attributes: true });
+    // setObserver for data-optisearch-column removed
+    // setObserver(mutations => {
+    //   mutations.some(m => {
+    //     if (m.attributeName !== "data-optisearch-column") return;
+    //     if(!m.target.dataset.optisearchColumn) {
+    //       Context.set('wideColumn', Context.get('wideColumn')); // to set again the column attribute
+    //       return;
+    //     }
+    //     const isWide = m.target.dataset.optisearchColumn === 'wide';
+    //     if (Context.get('wideColumn') !== isWide) {
+    //       Context.set('wideColumn', isWide);
+    //     }
+    //   })
+    // }, Context.rightColumn, { attributes: true });
   }
 
   static updateColor() {

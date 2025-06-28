@@ -14,14 +14,12 @@
   float: none !important;
   clear: both !important;
   padding: 0 !important;
-  z-index: 9999;
+  z-index: 100; /* Lowered z-index significantly */
   width: var(--opti-compressed-width); /* Default to compressed width */
-  transition: width var(--expand-time) ease-in-out; /* Smooth transition for width change */
+  /* transition: width var(--expand-time) ease-in-out; */ /* No longer needed as width is fixed */
 }
 
-.optisearch-column-positioned[data-optisearch-column="wide"] {
-  width: var(--opti-max-width); /* Expanded width */
-}
+/* Rule for data-optisearch-column="wide" is no longer needed */
 
 .optisearchbox {
   margin: 20px 0;

@@ -1,10 +1,6 @@
 const Settings = {
   Options: {
-    wideColumn: {
-      name: "Force large panel width",
-      default: false,
-      active: false,
-    },
+    // wideColumn removed
   },
   'AI Assitant': {
     premium: {

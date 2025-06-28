@@ -6,10 +6,10 @@ class ChatSession {
   static #undefinedError = _t("Oups, an error occured. Please try again.");
 
   static errors = {};
-  static Mode = {
-    Text: 0,
-    Discussion: 1,
-  };
+  // static Mode = { // Mode.Discussion removed
+  //   Text: 0,
+  //   Discussion: 1,
+  // };
 
   events = {};
   dispatch(event, ...data) {
@@ -36,9 +36,9 @@ class ChatSession {
   currentAction = null;
   actionButton = null;
   lastError = null;
-  mode = ChatSession.Mode.Text;
+  // mode = ChatSession.Mode.Text; // mode property removed
   sendingAllowed = true;
-  deleteConversationAfter = true;
+  // deleteConversationAfter = true; // Removed
 
   discussion = new Discussion();
 
@@ -48,11 +48,11 @@ class ChatSession {
     if (!name)
       throw ChatSession.#nameError;
     this.name = name;
-    window.addEventListener('beforeunload', () => {
-      if (this.deleteConversationAfter) {
-        this.removeConversation();
-      }
-    });
+    // window.addEventListener('beforeunload', () => { // Removed deleteConversationAfter logic
+    //   if (this.deleteConversationAfter) {
+    //     this.removeConversation();
+    //   }
+    // });
   }
 
   /**
@@ -151,13 +151,13 @@ class ChatSession {
       hideElement(hr);
   
       const foot = el("div", { className: 'optifoot' });
-      this.listen('conversationModeSwitched', () => {
-        hideElement(hr);
-        hideElement(foot);
-      });
+      // this.listen('conversationModeSwitched', () => { // conversationModeSwitched event removed
+      //   hideElement(hr);
+      //   hideElement(foot);
+      // });
 
       this.listen('onMessage', (_, sources) => {
-        if(this.mode !== ChatSession.Mode.Text) return;
+        // if(this.mode !== ChatSession.Mode.Text) return; // mode property removed, assume always Text-like display
         foot.replaceChildren();
         if (!sources?.length) {
           hideElement(hr);
@@ -288,69 +288,52 @@ class ChatSession {
       this.listen('clear', () => hideElement(inputContainer));
 
       inputContainer.append(
-        buildTextArea(),
-        buildInfoContainer(),
+        // buildTextArea(), // Removed
+        // buildInfoContainer(), // Removed
       );
+      // Hide input container by default as it's no longer used for input
+      hideElement(inputContainer);
       return inputContainer;
     }
 
     const buildChatContainer = () => {
-      const chatContainer = el('div', { className: 'response-container' });
-      this.listen('conversationModeSwitched', () => chatContainer.className = 'chat-container');
+      const chatContainer = el('div', { className: 'response-container' }); // Remains 'response-container'
+      // this.listen('conversationModeSwitched', () => chatContainer.className = 'chat-container'); // Event removed
       chatContainer.append(
-        this.discussion.el,
-        buildInputContainer(),
+        this.discussion.el
+        // buildInputContainer(), // Input container is removed from chat display area
       );
       return chatContainer;
     }
     
     /** Left buttons **/
-    const buildBookmarkButton = () => {
-      const bookmark = el('div', {
-        title: _t('Save conversation in $AI$', this.properties.name),
-        className: 'save-conversation-button',
-      });
-      this.setDeleteConversationAfter = async (value) => {
-        // if (!value && await Context.handleNotPremium()) return; // Removed premium check
-        this.deleteConversationAfter = value;
-        setSvg(bookmark, SVG[value ? 'emptyBookmark' : 'filledBookmark']);
-      };
-      this.setDeleteConversationAfter(true);
-      bookmark.addEventListener('click', () => {
-        this.setDeleteConversationAfter(!this.deleteConversationAfter);
-      });
-      return bookmark;
-    }
+    // const buildBookmarkButton = () => { ... } // Removed
 
     const buildChatButton = () => {
-      const continueChat = el('div', {
-        title: _t('Continue the conversation'),
-        className: 'continue-conversation-button',
+      const continueChatButton = el('div', {
+        title: _t('Continue this chat on Gemini website'), // Updated title
+        className: 'continue-conversation-button', // Can keep class or rename
       });
-      setSvg(continueChat, SVG.chat);
-      continueChat.addEventListener('click', async () => {
-        // if (await Context.handleNotPremium()) return; // Removed premium check
-        if (this.mode === ChatSession.Mode.Discussion) {
-          return;
-        }
-        this.mode = ChatSession.Mode.Discussion;
-        this.setDeleteConversationAfter(false);
-        hideElement(continueChat);
-        if (this.discussion.length === 0) {
-          this.setCurrentAction(null);
-        }
-        this.dispatch('conversationModeSwitched', this.mode);
+      setSvg(continueChatButton, SVG.chat); // Keep icon
+      continueChatButton.addEventListener('click', () => {
+        // TODO: Ideally, construct a URL that opens this specific chat.
+        // For now, opens the main Gemini page.
+        // This might require knowledge of how Gemini structures its chat URLs
+        // and if a chat ID is available in `this.session` or `this.discussion`.
+        // Example: let geminiUrl = 'https://gemini.google.com/app';
+        // if (this.session && this.session.chatId) { // Hypothetical
+        //   geminiUrl = `https://gemini.google.com/app/chat/${this.session.chatId}`;
+        // }
+        chrome.tabs.create({ url: 'https://gemini.google.com/app' });
       });
 
-      return continueChat;
+      return continueChatButton;
     }
 
     const buildLeftButtonsContainer = () => {
       const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
-      leftButtonsContainer.append(
-        buildBookmarkButton(),
-        buildChatButton(),
-      );
+      // leftButtonsContainer.append(buildBookmarkButton()); // Removed
+      leftButtonsContainer.append(buildChatButton());
       return leftButtonsContainer;
     }
 
@@ -426,15 +409,18 @@ class ChatSession {
   }
 
   restartConversation() {
-    if (this.session && this.deleteConversationAfter) {
-      this.removeConversation();
+    // if (this.session && this.deleteConversationAfter) { // deleteConversationAfter removed
+    //   this.removeConversation();
+    // }
+    if (this.session) { // Still remove if session exists, just not tied to deleteConversationAfter
+        this.removeConversation();
     }
     this.session = null;
     this.clear();
     this.setupAndSend();
-    if (this.mode === ChatSession.Mode.Discussion) {
-      this.dispatch('conversationModeSwitched', this.mode);
-    }
+    // if (this.mode === ChatSession.Mode.Discussion) { // mode and Discussion mode removed
+    //   this.dispatch('conversationModeSwitched', this.mode);
+    // }
   }
 
   handleActionError(error) {
