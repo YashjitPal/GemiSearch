@@ -1,0 +1,300 @@
+{
+    "optisearchName": {
+        "message": "OptiSearch"
+    },
+    "optisearchDesc": {
+        "message": "ChatGPT, StackOverflow, Wikipedia 등에서 Google 검색 결과 옆에 답변을 제공합니다."
+    },
+    "bingchatName": {
+        "message": "Google의 Copilot (Bing Chat)"
+    },
+    "bingchatDesc": {
+        "message": "🗨️ Microsoft Copilot 의 답변을 Google 검색 결과 옆에 제공합니다."
+    },
+    "bardName": {
+        "message": "Google 검색 결과 옆에 Gemini"
+    },
+    "bardDesc": {
+        "message": "🗨️ Google 검색 결과 옆에 Google Gemini 의 답변."
+    },
+    "Copied_": {
+        "message": "복사되었습니다!"
+    },
+    "Error": {
+        "message": "오류"
+    },
+    "Go_to_Chrome_Web_Store": {
+        "message": "Chrome 웹 스토어로 이동"
+    },
+    "Get_answers_from__strong__AI___strong_": {
+        "message": "<strong>$AI$</strong> 에서 답변을 얻으세요",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "I_want_answers_from__strong__AI___strong__too_": {
+        "message": "나도 <strong>$AI$</strong> 에게서 답변을 원해요!",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "I_want_answers_from__strong_ChatGPT__strong__and__strong_StackOverflow__strong__too_": {
+        "message": "나도 <strong>ChatGPT</strong> 과 <strong>StackOverflow</strong> 에게서 답변을 원해요!"
+    },
+    "Manage_subscription": {
+        "message": "구독 관리"
+    },
+    "Upgrade_to_Premium": {
+        "message": "프리미엄으로 업그레이드"
+    },
+    "Failed_to_load_subscription_status": {
+        "message": "구독 상태 로드 실패"
+    },
+    "Supported_engines": {
+        "message": "지원되는 엔진"
+    },
+    "Loading_subscription___": {
+        "message": "구독을 로드하는 중입니다..."
+    },
+    "Privacy": {
+        "message": "개인 정보"
+    },
+    "Rate_this_extension": {
+        "message": "이 확장 프로그램을 평가하세요"
+    },
+    "GitHub": {
+        "message": "깃허브"
+    },
+    "Also_from_OptiSearch": {
+        "message": "OptiSearch에서도"
+    },
+    "Import_GPX_routes_from_Strava___Komoot_and_follow_them_on_your_watch_": {
+        "message": "Strava 및 Komoot에서 GPX 경로를 가져와 시계에서 따라보세요!"
+    },
+    "NEW": {
+        "message": "새로운"
+    },
+    "Options": {
+        "message": "옵션"
+    },
+    "Force_large_panel_width": {
+        "message": "큰 패널 폭을 강제"
+    },
+    "AI_Assitant": {
+        "message": "AI 도우미"
+    },
+    "Is_the_user_premium": {
+        "message": "사용자는 프리미엄인가?"
+    },
+    "Ask_at_search": {
+        "message": "검색 중 질문"
+    },
+    "Ask_the_AI_assistant_as_soon_as_the_result_page_is_loaded": {
+        "message": "결과 페이지가 로딩 되 sobald AI 에게 질문"
+    },
+    "Maximum_number_of_result_panels": {
+        "message": "사이트 결과 패널 최대 수"
+    },
+    "ChatGPT": {
+        "message": "ChatGPT"
+    },
+    "Google_account_ID": {
+        "message": "Google 계정 ID"
+    },
+    "Google_account_number_to_use_with_Gemini": {
+        "message": "Gemini와 함께 사용할 Google 계정 번호"
+    },
+    "__Premium__": {
+        "message": "⭐ 프리미엄 ⭐"
+    },
+    "This_also_includes__strong___Premium____strong__for_the_following_extensions_": {
+        "message": "이 또한 다음 확장 프로그램에 대해 <strong>⭐ 프리미엄 ⭐</strong> 을 포함합니다!"
+    },
+    "Get_Premium": {
+        "message": "프리미엄을 얻다"
+    },
+    "_strong_Save_your_conversation__strong__for_later": {
+        "message": "<strong>나중에 다시 보기 위해 대화를</strong> 저장합니다"
+    },
+    "_strong_Chat_directly__strong__in_the_result_page": {
+        "message": "<strong>결과 페이지에서 직접</strong> 채팅하십시오"
+    },
+    "OptiSearch__for_ChatGPT_": {
+        "message": "OptiSearch(챗봇GPT용)"
+    },
+    "Premium_subscription": {
+        "message": "프리미엄 구독"
+    },
+    "Donate": {
+        "message": "기부하세요"
+    },
+    "Minimize_the_panel": {
+        "message": "패널 축소"
+    },
+    "Expand_the_panel": {
+        "message": "패널 확장"
+    },
+    "Oups__an_error_occured__Please_try_again_": {
+        "message": "오류가 발생했습니다. 다시 시도해 주세요."
+    },
+    "Pause_auto_generation": {
+        "message": "자동 생성 일시 중지"
+    },
+    "Send_message": {
+        "message": "메시지 보내기"
+    },
+    "Ask_me_anything___": {
+        "message": "무엇이라도 물어보세요 ..."
+    },
+    "_AI__is_answering___": {
+        "message": "$AI$ 가 대답하는 중입니다…",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Save_conversation_in__AI_": {
+        "message": "$AI$ 에 대화를 저장",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Continue_the_conversation": {
+        "message": "대화를 계속하십시오"
+    },
+    "Enable_auto_generation": {
+        "message": "자동 생성 활성화"
+    },
+    "Waiting_for__strong__AI___strong____": {
+        "message": "<strong>$AI$</strong> 의 응답을 기다리는 중...",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Ask__AI_": {
+        "message": "$AI$ 에게 물어보기",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Refresh": {
+        "message": "새로 고침"
+    },
+    "Please_login_to__AI___then_refresh": {
+        "message": "$AI$에 로그인한 후 페이지를 새로 고침",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Login_to__AI_": {
+        "message": "$AI$에 로그인",
+        "placeholders": {
+            "AI": {
+                "content": "$1"
+            }
+        }
+    },
+    "Too_many_requests__Please_solve_the_captcha_and_refresh": {
+        "message": "요청이 너무 많습니다. CAPTCHA를 해결하고 페이지를 새로 고치세요."
+    },
+    "Solve_Google_Gemini_captcha": {
+        "message": "Google Gemini CAPTCHA를 해결하세요"
+    },
+    "An_error_occured_while_parsing_the_response__br__error_": {
+        "message": "응답을 파싱하는 동안 오류가 발생했습니다:<br>$error$",
+        "placeholders": {
+            "error": {
+                "content": "$1"
+            }
+        }
+    },
+    "This_Google_account_does_not_have_access_to_Gemini_yet__please_visit__a_href___url___this_link__a__to_activate_it_or_choose_another_Google_account_for_Gemini": {
+        "message": "이 Google 계정은 아직 Gemini에 액세스할 수 없습니다. <a href=\"$url$\">이 링크</a>를 방문하여 활성화하거나 Gemini에 사용할 다른 Google 계정을 선택하십시오.",
+        "placeholders": {
+            "url": {
+                "content": "$1"
+            }
+        }
+    },
+    "Choose_a_Google_account_for_Gemini": {
+        "message": "Gemini에 사용할 Google 계정을 선택하세요"
+    },
+    "Switch_Google_account": {
+        "message": "Google 계정 전환"
+    },
+    "Please_login_to_Bing_with_your_Microsoft_account__then_refresh": {
+        "message": "Bing에 Microsoft 계정으로 로그인한 다음 페이지를 새로 고치세요."
+    },
+    "Register_to_the_waitlist": {
+        "message": "대기 목록에 등록"
+    },
+    "Sorry__you_ve_reached_the_limit_of_messages_you_can_send_to_Copilot_within_24_hours__Check_back_soon_": {
+        "message": "죄송합니다. 24시간 이내에 Copilot에게 보낼 수 있는 메시지 제한에 도달했습니다. 곧 다시 확인하십시오!"
+    },
+    "Learn_more": {
+        "message": "자세히 알아보기"
+    },
+    "Show_more": {
+        "message": "더보기"
+    },
+    "__n__more": {
+        "message": "+$n$ 더",
+        "placeholders": {
+            "n": {
+                "content": "$1"
+            }
+        }
+    },
+    "Please_pass_the_Cloudflare_check_on_ChatGPT__then_refresh": {
+        "message": "ChatGPT에서 Cloudflare 확인을 통과한 다음 새로 고침하세요"
+    },
+    "Cloudflare_check": {
+        "message": "Cloudflare 확인"
+    },
+    "I_already_have_Premium": {
+        "message": "이미 프리미엄이 있습니다"
+    },
+    "Robot_check__": {
+        "message": "로봇 확인 ✓"
+    },
+    "To_see_answers_from__host__you_first_need_to__a_href___link____verify_that_you_are_not_a_robot__a__": {
+        "message": "$host$의 답변을 보려면 먼저 <a href='$link$'>로봇이 아님을 확인</a>해야 합니다.",
+        "placeholders": {
+            "host": {
+                "content": "$1"
+            },
+            "link": {
+                "content": "$2"
+            }
+        }
+    },
+    "Then__a_href___link___refresh_this_page__a__": {
+        "message": "그런 다음 <a href='$link$'>이 페이지를 새로 고침</a>하세요.",
+        "placeholders": {
+            "link": {
+                "content": "$1"
+            }
+        }
+    },
+    "No_answer_on_this_question____If_you_know_the_answer___a_href___link__post_form__submit_it__a__": {
+        "message": "이 질문에 대한 답변이 없습니다... 답을 알고 계시다면, <a href='$link$#post-form'>제출</a>해 주세요!",
+        "placeholders": {
+            "link": {
+                "content": "$1"
+            }
+        }
+    }
+}

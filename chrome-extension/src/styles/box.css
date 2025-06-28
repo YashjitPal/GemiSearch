@@ -1,0 +1,39 @@
+:root {
+  --line-dark: #34363e;
+  --expand-time: 0.5s;
+  --opti-max-width: 600px;
+  --opti-compressed-width: 350px; /* Explicit compressed width */
+}
+
+/* Styles for the container (Context.rightColumn) that will be absolutely positioned */
+.optisearch-column-positioned {
+  /* position, top, right are set by JS */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  float: none !important;
+  clear: both !important;
+  padding: 0 !important;
+  z-index: 100; /* Lowered z-index significantly */
+  width: var(--opti-compressed-width); /* Default to compressed width */
+  /* transition: width var(--expand-time) ease-in-out; */ /* No longer needed as width is fixed */
+}
+
+/* Rule for data-optisearch-column="wide" is no longer needed */
+
+.optisearchbox {
+  margin: 20px 0;
+  border-radius: 8px;
+  /* min-width: 250px; */ /* Let container width dictate this now */
+  /* max-width: var(--opti-max-width); */ /* Container handles max width */
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
+  overflow: hidden;
+}
+
+/* The [data-optisearch-column=wide] .optisearchbox rule can be removed if
+   .optisearchbox width: 100% is sufficient and container handles the two width states.
+   If specific styles for the box itself in wide mode are needed, it can be kept.
+   For now, assuming container width change is enough.
+*/
