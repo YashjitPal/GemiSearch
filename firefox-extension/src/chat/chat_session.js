@@ -316,14 +316,8 @@ class ChatSession {
       });
       setSvg(continueChatButton, SVG.chat);
       continueChatButton.addEventListener('click', () => {
-        let targetUrl = 'https://gemini.google.com/app'; // Default fallback
-        if (this.name === 'bard' && this.session && this.session.chatWebUrl) {
-          targetUrl = this.session.chatWebUrl;
-        } else if (this.properties && this.properties.link) {
-          // Fallback for other AIs if they have a general link
-          targetUrl = this.properties.link;
-        }
-        chrome.tabs.create({ url: targetUrl });
+        // Always redirect to gemini.google.com/app
+        chrome.tabs.create({ url: 'https://gemini.google.com/app' });
       });
 
       return continueChatButton;
