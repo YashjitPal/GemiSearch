@@ -311,20 +311,19 @@ class ChatSession {
 
     const buildChatButton = () => {
       const continueChatButton = el('div', {
-        title: _t('Continue this chat on Gemini website'), // Updated title
-        className: 'continue-conversation-button', // Can keep class or rename
+        title: _t('Continue this chat on Gemini website'),
+        className: 'continue-conversation-button',
       });
-      setSvg(continueChatButton, SVG.chat); // Keep icon
+      setSvg(continueChatButton, SVG.chat);
       continueChatButton.addEventListener('click', () => {
-        // TODO: Ideally, construct a URL that opens this specific chat.
-        // For now, opens the main Gemini page.
-        // This might require knowledge of how Gemini structures its chat URLs
-        // and if a chat ID is available in `this.session` or `this.discussion`.
-        // Example: let geminiUrl = 'https://gemini.google.com/app';
-        // if (this.session && this.session.chatId) { // Hypothetical
-        //   geminiUrl = `https://gemini.google.com/app/chat/${this.session.chatId}`;
-        // }
-        chrome.tabs.create({ url: 'https://gemini.google.com/app' });
+        let targetUrl = 'https://gemini.google.com/app'; // Default fallback
+        if (this.name === 'bard' && this.session && this.session.chatWebUrl) {
+          targetUrl = this.session.chatWebUrl;
+        } else if (this.properties && this.properties.link) {
+          // Fallback for other AIs if they have a general link
+          targetUrl = this.properties.link;
+        }
+        chrome.tabs.create({ url: targetUrl });
       });
 
       return continueChatButton;

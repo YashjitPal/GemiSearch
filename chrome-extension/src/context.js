@@ -114,7 +114,7 @@ class Context {
       sendResponse(true);
     });
 
-    window.addEventListener('resize', () => Context.adjustPanelPosition()); // Re-adjust on resize - Keep
+    // window.addEventListener('resize', () => Context.adjustPanelPosition()); // Removed resize listener
 
     if (Context.chatSession && Context.chatSession.panel) {
       Context.appendPanel(Context.chatSession.panel);
@@ -220,7 +220,7 @@ class Context {
 
     const header = $('.optiheader', panel);
     if (header) {
-      header.prepend(el('div', { className: 'watermark', textContent: _t("optisearchName") }, header));
+      // header.prepend(el('div', { className: 'watermark', textContent: _t("optisearchName") }, header)); // Watermark removed
 
       const topButtons = buildTopButtons();
       if (topButtons && topButtons.hasChildNodes()) { // Only append if there are buttons
@@ -507,5 +507,24 @@ class Context {
     // The .optisearchbox within will have its own margins if defined in box.css
     // For now, let the inner box's margin (if any) handle it.
     // Context.rightColumn.style.marginTop = '20px'; // Or manage via inner .optisearchbox margin
+
+    // Attempt to prevent overlap with Google's footer
+    const googleFooter = document.querySelector('#foot'); // Common selector for Google's footer
+    if (googleFooter) {
+      const panelRect = Context.rightColumn.getBoundingClientRect(); // Re-get after top is set
+      const footerRect = googleFooter.getBoundingClientRect();
+      const availableHeight = (scrollTop + footerRect.top) - (scrollTop + panelRect.top) - 20; // 20px margin from footer
+
+      if (availableHeight > 50) { // Ensure there's a reasonable minimum height
+        Context.rightColumn.style.maxHeight = `${availableHeight}px`;
+        Context.rightColumn.style.overflowY = 'auto';
+      } else {
+        Context.rightColumn.style.maxHeight = ''; // Or a sensible min-height like '100px'
+        Context.rightColumn.style.overflowY = '';
+      }
+    } else {
+      Context.rightColumn.style.maxHeight = ''; // No footer found, remove constraint
+      Context.rightColumn.style.overflowY = '';
+    }
   }
 }

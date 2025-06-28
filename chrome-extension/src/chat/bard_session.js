@@ -217,10 +217,18 @@ class BardSession extends ChatSession {
     try {
       const answersList = parseAnswersList(formattedResponse);
       const firstAnswer = answersList[0];
-      this.session.conversation = parseConversationId(formattedResponse);
-      this.session.conversation.push(firstAnswer[0]);
+      const conversationId = parseConversationId(formattedResponse);
+      if (conversationId && conversationId[0]) {
+        this.session.conversation = conversationId;
+        this.session.conversation.push(firstAnswer[0]); // For internal use if needed by API
+        // Store the specific chat URL for redirection
+        this.session.chatWebUrl = `${this.urlPrefix}/chat/${conversationId[0]}`;
+      } else {
+        this.session.chatWebUrl = `${this.urlPrefix}/app`; // Fallback
+      }
       this.onMessage(...buildMessage(firstAnswer));
     } catch (e) {
+      this.session.chatWebUrl = `${this.urlPrefix}/app`; // Fallback on error
       this.onErrorMessage(_t("An error occured while parsing the response:<br>$error$", e));
     }
   }
